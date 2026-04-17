@@ -27,7 +27,8 @@ class WordBlaze {
             successAnimation: document.getElementById('successAnimation'),
             playAgainBtn: document.getElementById('playAgainBtn'),
             changeDifficultyBtn: document.getElementById('changeDifficultyBtn'),
-            difficultyBtns: document.querySelectorAll('.difficulty-btn')
+            difficultyBtns: document.querySelectorAll('.difficulty-btn'),
+            keyboardToggleBtn: document.getElementById('keyboardToggleBtn')
         };
 
         // Game State
@@ -182,6 +183,7 @@ class WordBlaze {
         this.loadGameData();
         this.setupEventListeners();
         this.createKeyboard();
+        this.initializeKeyboardToggle();
         this.startNewGame();
     }
 
@@ -230,16 +232,8 @@ class WordBlaze {
             this.showDifficultySelector();
         });
 
-        // Physical keyboard input (works on both mobile and desktop)
+        // Keyboard input
         document.addEventListener('keydown', (e) => this.handleKeyboardInput(e));
-        
-        // Mobile touch keyboard support
-        this.setupMobileKeyboardSupport();
-    }
-    
-    setupMobileKeyboardSupport() {
-        // This method is now handled in createKeyboard to avoid duplicates
-        // Mobile touch support is automatically handled by click events
     }
 
     createKeyboard() {
@@ -429,44 +423,9 @@ class WordBlaze {
         if (!this.gameState.isGameActive) return;
 
         const letter = e.key.toUpperCase();
-        
-        // Handle letter keys (A-Z)
         if (letter.length === 1 && letter >= 'A' && letter <= 'Z') {
             e.preventDefault();
             this.guessLetter(letter.toLowerCase());
-            return;
-        }
-        
-        // Handle backspace on mobile
-        if (e.key === 'Backspace' || e.key === 'Delete') {
-            e.preventDefault();
-            // Optional: Handle backspace functionality if needed
-            return;
-        }
-        
-        // Handle spacebar for hint (mobile friendly)
-        if (e.key === ' ' || e.key === 'Space') {
-            e.preventDefault();
-            this.useHint();
-            return;
-        }
-        
-        // Handle Enter for new game
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (!this.gameState.isGameActive) {
-                this.startNewGame();
-            }
-            return;
-        }
-        
-        // Handle Escape to close modal
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            if (!this.elements.gameModal.classList.contains('hidden')) {
-                this.hideModal();
-            }
-            return;
         }
     }
 
@@ -617,6 +576,35 @@ class WordBlaze {
         this.elements.difficultyBtns[0].focus();
     }
 
+    showSuccessAnimation() {
+        this.elements.successAnimation.classList.remove('hidden');
+        setTimeout(() => {
+            this.elements.successAnimation.classList.add('hidden');
+        }, 1000);
+    }
+
+    showGameOverModal() {
+        const isNewHighScore = this.gameState.score >= this.gameState.highScore && this.gameState.score > 0;
+        
+        // Update modal content
+        this.elements.modalTitle.textContent = 'Game Over!';
+        this.elements.modalEmoji.textContent = 'ð';
+        this.elements.resultWord.textContent = this.gameState.currentWord;
+        this.elements.finalScore.textContent = this.gameState.score;
+        this.elements.finalWords.textContent = this.gameState.wordsCompleted;
+        this.elements.finalStreak.textContent = this.gameState.bestStreak;
+        
+        // Show new high score message
+        this.elements.newHighScore.style.display = isNewHighScore ? 'block' : 'none';
+        
+        // Show modal
+        this.elements.gameModal.classList.remove('hidden');
+    }
+
+    hideModal() {
+        this.elements.gameModal.classList.add('hidden');
+    }
+
     playSound(type) {
         // Create simple sound effects using Web Audio API
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -639,104 +627,46 @@ class WordBlaze {
         oscillator.start();
         oscillator.stop(audioContext.currentTime + 0.1);
     }
+
+    initializeKeyboardToggle() {
+        const keyboardToggleBtn = document.getElementById('keyboardToggleBtn');
+        const keyboardContainer = document.querySelector('.keyboard-container');
+        const keyboardText = document.querySelector('.keyboard-text');
+        
+        // Check if mobile device
+        const isMobile = window.innerWidth <= 768;
+        
+        // Auto-hide keyboard on mobile
+        if (isMobile) {
+            keyboardContainer.classList.add('keyboard-hidden');
+            keyboardText.textContent = 'Show Keyboard';
+        }
+        
+        // Toggle keyboard visibility
+        keyboardToggleBtn.addEventListener('click', () => {
+            const isHidden = keyboardContainer.classList.contains('keyboard-hidden');
+            
+            if (isHidden) {
+                keyboardContainer.classList.remove('keyboard-hidden');
+                keyboardText.textContent = 'Hide Keyboard';
+            } else {
+                keyboardContainer.classList.add('keyboard-hidden');
+                keyboardText.textContent = 'Show Keyboard';
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const isMobileResize = window.innerWidth <= 768;
+            if (isMobileResize && !keyboardContainer.classList.contains('keyboard-hidden')) {
+                keyboardContainer.classList.add('keyboard-hidden');
+                keyboardText.textContent = 'Show Keyboard';
+            }
+        });
+    }
 }
 
 // Initialize the game when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new WordBlaze();
-});
-
-// Mobile Keyboard Toggle
-class MobileKeyboardToggle {
-    constructor() {
-        this.toggleBtn = document.getElementById('keyboardToggleBtn');
-        this.keyboardContainer = document.getElementById('keyboardContainer');
-        this.toggleText = document.querySelector('.toggle-text');
-        this.isKeyboardVisible = true;
-        
-        this.init();
-    }
-    
-    init() {
-        this.setupEventListeners();
-        
-        // Handle initial state based on screen size
-        if (window.innerWidth <= 768) {
-            // Initially hide keyboard on mobile
-            this.hideKeyboard();
-            document.getElementById('mobileKeyboardToggle').style.display = 'flex';
-        } else {
-            // Always show keyboard on desktop
-            this.showKeyboard();
-            document.getElementById('mobileKeyboardToggle').style.display = 'none';
-        }
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth <= 768) {
-                document.getElementById('mobileKeyboardToggle').style.display = 'flex';
-            } else {
-                document.getElementById('mobileKeyboardToggle').style.display = 'none';
-                this.showKeyboard(); // Always show on desktop
-            }
-        });
-    }
-    
-    setupEventListeners() {
-        this.toggleBtn.addEventListener('click', () => {
-            this.toggleKeyboard();
-        });
-        
-        // Add touch feedback
-        this.toggleBtn.addEventListener('touchstart', () => {
-            this.toggleBtn.style.transform = 'scale(0.95)';
-        });
-        
-        this.toggleBtn.addEventListener('touchend', () => {
-            this.toggleBtn.style.transform = 'scale(1)';
-        });
-    }
-    
-    toggleKeyboard() {
-        if (this.isKeyboardVisible) {
-            this.hideKeyboard();
-        } else {
-            this.showKeyboard();
-        }
-    }
-    
-    hideKeyboard() {
-        this.keyboardContainer.classList.add('hidden');
-        this.toggleText.textContent = 'Show Keyboard';
-        this.isKeyboardVisible = false;
-        
-        // Add haptic feedback if available
-        if (navigator.vibrate) {
-            navigator.vibrate(50);
-        }
-    }
-    
-    showKeyboard() {
-        this.keyboardContainer.classList.remove('hidden');
-        this.toggleText.textContent = 'Hide Keyboard';
-        this.isKeyboardVisible = true;
-        
-        // Add haptic feedback if available
-        if (navigator.vibrate) {
-            navigator.vibrate(50);
-        }
-        
-        // Smooth scroll to keyboard
-        setTimeout(() => {
-            this.keyboardContainer.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-            });
-        }, 100);
-    }
-}
-
-// Initialize mobile keyboard toggle
-document.addEventListener('DOMContentLoaded', () => {
-    new MobileKeyboardToggle();
 });

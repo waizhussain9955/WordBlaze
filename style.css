@@ -418,19 +418,6 @@ body.page {
   transform: none;
 }
 
-.keyboard-shortcuts {
-  margin-top: var(--spacing-sm);
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-.keyboard-shortcuts small {
-  font-family: var(--font-body);
-  line-height: 1.4;
-}
-
 .game-stats {
   display: flex;
   justify-content: center;
@@ -545,64 +532,58 @@ body.page {
 }
 
 /* Mobile Keyboard Toggle */
-.mobile-keyboard-toggle {
-  display: none;
-  justify-content: center;
-  margin: var(--spacing-md) 0;
+.keyboard-toggle {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
 }
 
 .keyboard-toggle-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-md) var(--spacing-lg);
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   color: var(--text-primary);
+  font-family: var(--font-primary);
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   box-shadow: var(--glass-shadow);
 }
 
 .keyboard-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(31, 38, 135, 0.4);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.4);
 }
 
 .keyboard-toggle-btn:active {
   transform: translateY(0);
 }
 
-.toggle-icon {
-  font-size: 1.2rem;
+.keyboard-icon {
+  font-size: 1rem;
+  opacity: 0.8;
 }
 
-.toggle-text {
-  font-family: var(--font-body);
+.keyboard-text {
+  font-size: 0.875rem;
 }
 
-.keyboard-container.hidden {
-  display: none !important;
+.keyboard-container.keyboard-hidden .keyboard {
+  display: none;
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .mobile-keyboard-toggle {
-    display: flex;
-  }
-  
-  .keyboard-container {
-    transition: all var(--transition-normal);
-  }
-  
-  .keyboard-toggle-btn {
-    min-height: 44px;
-    min-width: 120px;
-  }
+.keyboard-container.keyboard-hidden .keyboard-text {
+  content: "Show Keyboard";
+}
+
+.keyboard-container:not(.keyboard-hidden) .keyboard-text {
+  content: "Hide Keyboard";
 }
 
 /* Footer */

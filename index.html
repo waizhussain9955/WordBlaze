@@ -107,14 +107,13 @@
           </div>
         </div>
 
-        <div class="mobile-keyboard-toggle" id="mobileKeyboardToggle">
-          <button class="keyboard-toggle-btn" id="keyboardToggleBtn">
-            <span class="toggle-icon">keyboard</span>
-            <span class="toggle-text">Show Keyboard</span>
-          </button>
-        </div>
-
-        <div class="keyboard-container" id="keyboardContainer">
+        <div class="keyboard-container">
+          <div class="keyboard-toggle">
+            <button class="keyboard-toggle-btn" id="keyboardToggleBtn">
+              <span class="keyboard-icon">keyboard</span>
+              <span class="keyboard-text">Show Keyboard</span>
+            </button>
+          </div>
           <div class="keyboard" id="keyboard"></div>
         </div>
       </main>
@@ -158,13 +157,9 @@
           </div>
         </div>
         
-        <div class="game-controls">
-          <button class="btn btn-primary" id="startBtn">Start Game</button>
-          <button class="btn btn-secondary" id="pauseBtn">Pause</button>
-          <button class="btn btn-warning hint-btn" id="hintBtn">Use Hint (-50)</button>
-          <div class="keyboard-shortcuts">
-            <small>Keyboard: A-Z letters | Space: Hint | Enter: New Game | Esc: Close</small>
-          </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="playAgainBtn">Play Again</button>
+          <button class="btn btn-secondary" id="changeDifficultyBtn">Change Difficulty</button>
         </div>
       </div>
     </div>
