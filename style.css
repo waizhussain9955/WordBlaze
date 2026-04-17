@@ -29,6 +29,7 @@
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
+  --spacing-xxl: 4rem;
   
   /* Border Radius */
   --radius-sm: 0.5rem;
@@ -68,7 +69,7 @@ body.page {
   align-items: center;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   position: relative;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
 }
 
 /* Animated Background */
@@ -128,10 +129,11 @@ body.page {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
+  margin: 0 auto;
 }
 
 /* Header */
@@ -754,6 +756,33 @@ body.page {
 
 .text-center {
   text-align: center;
+}
+
+/* Desktop Large Screen Optimization */
+@media (min-width: 1200px) {
+  .main-container {
+    max-width: 1000px;
+  }
+  
+  .game-title {
+    font-size: 3.5rem;
+  }
+  
+  .game-header {
+    padding: var(--spacing-xxl);
+  }
+  
+  .word-display li {
+    min-width: 3ch;
+    min-height: 3.5ch;
+    font-size: 1.5rem;
+  }
+  
+  .keyboard button {
+    min-width: 2.5ch;
+    min-height: 2.5ch;
+    font-size: 1.125rem;
+  }
 }
 
 /* Responsive Design */
