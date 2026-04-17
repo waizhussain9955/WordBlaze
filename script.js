@@ -602,3 +602,92 @@ class WordBlaze {
 document.addEventListener('DOMContentLoaded', () => {
     new WordBlaze();
 });
+
+// Mobile Keyboard Toggle
+class MobileKeyboardToggle {
+    constructor() {
+        this.toggleBtn = document.getElementById('keyboardToggleBtn');
+        this.keyboardContainer = document.getElementById('keyboardContainer');
+        this.toggleText = document.querySelector('.toggle-text');
+        this.isKeyboardVisible = true;
+        
+        this.init();
+    }
+    
+    init() {
+        // Only show toggle on mobile devices
+        if (window.innerWidth <= 768) {
+            this.setupEventListeners();
+            // Initially hide keyboard on mobile
+            this.hideKeyboard();
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                document.getElementById('mobileKeyboardToggle').style.display = 'flex';
+            } else {
+                document.getElementById('mobileKeyboardToggle').style.display = 'none';
+                this.showKeyboard(); // Always show on desktop
+            }
+        });
+    }
+    
+    setupEventListeners() {
+        this.toggleBtn.addEventListener('click', () => {
+            this.toggleKeyboard();
+        });
+        
+        // Add touch feedback
+        this.toggleBtn.addEventListener('touchstart', () => {
+            this.toggleBtn.style.transform = 'scale(0.95)';
+        });
+        
+        this.toggleBtn.addEventListener('touchend', () => {
+            this.toggleBtn.style.transform = 'scale(1)';
+        });
+    }
+    
+    toggleKeyboard() {
+        if (this.isKeyboardVisible) {
+            this.hideKeyboard();
+        } else {
+            this.showKeyboard();
+        }
+    }
+    
+    hideKeyboard() {
+        this.keyboardContainer.classList.add('hidden');
+        this.toggleText.textContent = 'Show Keyboard';
+        this.isKeyboardVisible = false;
+        
+        // Add haptic feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }
+    
+    showKeyboard() {
+        this.keyboardContainer.classList.remove('hidden');
+        this.toggleText.textContent = 'Hide Keyboard';
+        this.isKeyboardVisible = true;
+        
+        // Add haptic feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+        
+        // Smooth scroll to keyboard
+        setTimeout(() => {
+            this.keyboardContainer.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }, 100);
+    }
+}
+
+// Initialize mobile keyboard toggle
+document.addEventListener('DOMContentLoaded', () => {
+    new MobileKeyboardToggle();
+});

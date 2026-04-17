@@ -531,6 +531,67 @@ body.page {
   transform: none;
 }
 
+/* Mobile Keyboard Toggle */
+.mobile-keyboard-toggle {
+  display: none;
+  justify-content: center;
+  margin: var(--spacing-md) 0;
+}
+
+.keyboard-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--glass-shadow);
+}
+
+.keyboard-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(31, 38, 135, 0.4);
+}
+
+.keyboard-toggle-btn:active {
+  transform: translateY(0);
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+}
+
+.toggle-text {
+  font-family: var(--font-body);
+}
+
+.keyboard-container.hidden {
+  display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mobile-keyboard-toggle {
+    display: flex;
+  }
+  
+  .keyboard-container {
+    transition: all var(--transition-normal);
+  }
+  
+  .keyboard-toggle-btn {
+    min-height: 44px;
+    min-width: 120px;
+  }
+}
+
 /* Footer */
 .game-footer {
   text-align: center;
