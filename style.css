@@ -418,6 +418,19 @@ body.page {
   transform: none;
 }
 
+.keyboard-shortcuts {
+  margin-top: var(--spacing-sm);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.keyboard-shortcuts small {
+  font-family: var(--font-body);
+  line-height: 1.4;
+}
+
 .game-stats {
   display: flex;
   justify-content: center;

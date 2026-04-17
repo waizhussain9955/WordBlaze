@@ -230,8 +230,49 @@ class WordBlaze {
             this.showDifficultySelector();
         });
 
-        // Keyboard input
+        // Physical keyboard input (works on both mobile and desktop)
         document.addEventListener('keydown', (e) => this.handleKeyboardInput(e));
+        
+        // Mobile touch keyboard support
+        this.setupMobileKeyboardSupport();
+    }
+    
+    setupMobileKeyboardSupport() {
+        // Add touch events for better mobile keyboard interaction
+        const keyboardButtons = this.elements.keyboard.querySelectorAll('button');
+        
+        keyboardButtons.forEach(button => {
+            // Touch start for immediate feedback
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const letter = button.dataset.letter;
+                if (letter && this.gameState.isGameActive) {
+                    this.guessLetter(letter);
+                    
+                    // Add haptic feedback if available
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
+                }
+            });
+            
+            // Mouse events for desktop
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const letter = button.dataset.letter;
+                if (letter && this.gameState.isGameActive) {
+                    this.guessLetter(letter);
+                }
+            });
+        });
+        
+        // Prevent default touch behavior on game area
+        const gameArea = document.querySelector('.main-container');
+        gameArea.addEventListener('touchstart', (e) => {
+            if (e.target === gameArea || e.target.closest('.game-header')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     }
 
     createKeyboard() {
@@ -241,7 +282,6 @@ class WordBlaze {
             const button = document.createElement('button');
             button.textContent = letter;
             button.dataset.letter = letter.toLowerCase();
-            button.addEventListener('click', () => this.guessLetter(letter.toLowerCase()));
             this.elements.keyboard.appendChild(button);
         }
     }
@@ -421,9 +461,44 @@ class WordBlaze {
         if (!this.gameState.isGameActive) return;
 
         const letter = e.key.toUpperCase();
+        
+        // Handle letter keys (A-Z)
         if (letter.length === 1 && letter >= 'A' && letter <= 'Z') {
             e.preventDefault();
             this.guessLetter(letter.toLowerCase());
+            return;
+        }
+        
+        // Handle backspace on mobile
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            e.preventDefault();
+            // Optional: Handle backspace functionality if needed
+            return;
+        }
+        
+        // Handle spacebar for hint (mobile friendly)
+        if (e.key === ' ' || e.key === 'Space') {
+            e.preventDefault();
+            this.useHint();
+            return;
+        }
+        
+        // Handle Enter for new game
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!this.gameState.isGameActive) {
+                this.startNewGame();
+            }
+            return;
+        }
+        
+        // Handle Escape to close modal
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            if (!this.elements.gameModal.classList.contains('hidden')) {
+                this.hideModal();
+            }
+            return;
         }
     }
 
