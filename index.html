@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="WordBlaze - The ultimate word guessing challenge with modern gameplay">
+    <meta name="author" content="Waiz" />
+    <title>WordBlaze - Ultimate Word Challenge</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="page">
+    <div class="page-overlay"></div>
+    <div class="particles"></div>
+
+    <div class="main-container">
+      <header class="game-header">
+        <h1 class="game-title">
+          <span class="title-word">Word</span><span class="title-blaze">Blaze</span>
+        </h1>
+        <div class="header-stats">
+          <div class="stat-item">
+            <span class="stat-label">High Score</span>
+            <span class="stat-value" id="highScore">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Score</span>
+            <span class="stat-value" id="currentScore">0</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="game-controls">
+        <div class="difficulty-selector">
+          <label class="control-label">Difficulty:</label>
+          <div class="difficulty-buttons">
+            <button class="difficulty-btn active" data-level="easy">Easy</button>
+            <button class="difficulty-btn" data-level="medium">Medium</button>
+            <button class="difficulty-btn" data-level="hard">Hard</button>
+          </div>
+        </div>
+        
+        <div class="game-info">
+          <div class="timer-container">
+            <span class="timer-label">Time:</span>
+            <span class="timer-value" id="timer">60</span>
+          </div>
+          <div class="lives-container">
+            <span class="lives-label">Lives:</span>
+            <div class="lives-display" id="livesDisplay">
+              <span class="life">❤️</span>
+              <span class="life">❤️</span>
+              <span class="life">❤️</span>
+              <span class="life">❤️</span>
+              <span class="life">❤️</span>
+              <span class="life">❤️</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <main class="game-area">
+        <div class="game-card">
+          <div class="word-section">
+            <ul class="word-display" id="wordDisplay"></ul>
+            <div class="hint-section">
+              <p class="hint-text">Hint: <span id="hintText"></span></p>
+              <button class="hint-btn" id="hintBtn">
+                <span class="hint-icon">💡</span>
+                <span class="hint-text-btn">Get Hint (-50 pts)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="game-stats">
+            <div class="stat-box">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value" id="streak">0</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Words</span>
+              <span class="stat-value" id="wordsCompleted">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="keyboard-container">
+          <div class="keyboard" id="keyboard"></div>
+        </div>
+      </main>
+
+      <footer class="game-footer">
+        <p>Developed by Waiz | © 2024 WordBlaze</p>
+      </footer>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="game-modal hidden" id="gameModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitle">Game Over!</h2>
+          <div class="modal-emoji" id="modalEmoji">🎮</div>
+        </div>
+        
+        <div class="modal-body">
+          <div class="result-word">
+            <p class="result-label">The word was:</p>
+            <p class="result-word-text" id="resultWord"></p>
+          </div>
+          
+          <div class="score-summary">
+            <div class="score-item">
+              <span class="score-label">Final Score:</span>
+              <span class="score-value" id="finalScore">0</span>
+            </div>
+            <div class="score-item">
+              <span class="score-label">Words Completed:</span>
+              <span class="score-value" id="finalWords">0</span>
+            </div>
+            <div class="score-item">
+              <span class="score-label">Best Streak:</span>
+              <span class="score-value" id="finalStreak">0</span>
+            </div>
+          </div>
+          
+          <div class="new-high-score" id="newHighScore" style="display: none;">
+            <p>🏆 New High Score! 🏆</p>
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="playAgainBtn">Play Again</button>
+          <button class="btn btn-secondary" id="changeDifficultyBtn">Change Difficulty</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Animation -->
+    <div class="success-animation hidden" id="successAnimation">
+      <div class="success-content">
+        <div class="success-emoji">🎉</div>
+        <p class="success-text">Excellent!</p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
