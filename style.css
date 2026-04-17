@@ -586,7 +586,7 @@ body.page {
 }
 
 .keyboard-container.hidden {
-  display: none;
+  display: none !important;
 }
 
 /* Mobile Responsive */

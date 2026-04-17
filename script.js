@@ -658,11 +658,17 @@ class MobileKeyboardToggle {
     }
     
     init() {
-        // Only show toggle on mobile devices
+        this.setupEventListeners();
+        
+        // Handle initial state based on screen size
         if (window.innerWidth <= 768) {
-            this.setupEventListeners();
             // Initially hide keyboard on mobile
             this.hideKeyboard();
+            document.getElementById('mobileKeyboardToggle').style.display = 'flex';
+        } else {
+            // Always show keyboard on desktop
+            this.showKeyboard();
+            document.getElementById('mobileKeyboardToggle').style.display = 'none';
         }
         
         // Handle window resize
