@@ -238,41 +238,8 @@ class WordBlaze {
     }
     
     setupMobileKeyboardSupport() {
-        // Add touch events for better mobile keyboard interaction
-        const keyboardButtons = this.elements.keyboard.querySelectorAll('button');
-        
-        keyboardButtons.forEach(button => {
-            // Touch start for immediate feedback
-            button.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                const letter = button.dataset.letter;
-                if (letter && this.gameState.isGameActive) {
-                    this.guessLetter(letter);
-                    
-                    // Add haptic feedback if available
-                    if (navigator.vibrate) {
-                        navigator.vibrate(30);
-                    }
-                }
-            });
-            
-            // Mouse events for desktop
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const letter = button.dataset.letter;
-                if (letter && this.gameState.isGameActive) {
-                    this.guessLetter(letter);
-                }
-            });
-        });
-        
-        // Prevent default touch behavior on game area
-        const gameArea = document.querySelector('.main-container');
-        gameArea.addEventListener('touchstart', (e) => {
-            if (e.target === gameArea || e.target.closest('.game-header')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+        // This method is now handled in createKeyboard to avoid duplicates
+        // Mobile touch support is automatically handled by click events
     }
 
     createKeyboard() {
@@ -282,6 +249,7 @@ class WordBlaze {
             const button = document.createElement('button');
             button.textContent = letter;
             button.dataset.letter = letter.toLowerCase();
+            button.addEventListener('click', () => this.guessLetter(letter.toLowerCase()));
             this.elements.keyboard.appendChild(button);
         }
     }
